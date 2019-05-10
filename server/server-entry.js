@@ -1,0 +1,72 @@
+import { __update as update } from '@fullstack-system';
+
+var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+// Create Client Compiler
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const compiler = webpack(require('../config/client.webpack.config'));
+
+app.use(
+  webpackDevMiddleware(compiler, {
+    publicPath: '/'
+  })
+);
+app.use(
+  webpackHotMiddleware(compiler, {
+    log: console.log,
+    path: "/__webpack_hmr",
+    heartbeat: 10 * 1000
+  })
+);
+
+let ioEventHandlers = {};
+update('io', {
+  ...io,
+  on: (ev, handler) => {
+    if(!ioEventHandlers[ev]) {
+      ioEventHandlers[ev] = new Set();
+    }
+    ioEventHandlers[ev].add(handler);
+    io.on(ev, handler);
+  },
+  removeListener: (ev, handler) => {
+    if (ioEventHandlers[ev]) {
+      ioEventHandlers[ev].delete(handler);
+    }
+    io[ev].removeListener(ev, handler);
+  },
+});
+let clientRouter = express.Router();
+update('app', clientRouter);
+
+app.use((...args) => {
+  return clientRouter(...args);
+});
+
+require('{SERVER_ENTRY}');
+
+if(module.hot) {
+  module.hot.accept('{SERVER_ENTRY}', () => {
+    Object.keys(ioEventHandlers).forEach(ev => {
+      ioEventHandlers[ev].forEach(x => io.removeListener(ev, x));
+    });
+    ioEventHandlers = {};
+
+    io.emit('magic-loading::reconnect');
+    Object.values(io.of("/").connected).forEach(function (s) {
+      s.disconnect(true);
+    });
+
+    clientRouter = express.Router();
+    update('app', clientRouter);
+
+    require('{SERVER_ENTRY}');
+  });
+}
+
+http.listen(8000, () => console.log('Running on http://localhost:8000/'));
