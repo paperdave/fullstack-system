@@ -7,7 +7,7 @@ fs.removeSync(path.join(__dirname, '../.temp'));
 fs.mkdirsSync(path.join(__dirname, '../.temp'));
 
 // Generate Entry File
-const SERVER_ENTRY = path.join(process.cwd(), './src/server');
+const SERVER_ENTRY = path.join(process.cwd(), './src/server').replace(/\\/g, '\\\\');
 
 fs.writeFileSync(
   path.join(__dirname, '../.temp/webpack-server-entry.js'),
