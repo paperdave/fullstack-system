@@ -3,7 +3,7 @@ import { io } from '@fullstack-system';
 
 let socket;
 
-export default function useGlobalSocket(callback = null, memo = []) {
+export default function useSocket(callback = null, memo = []) {
   if(!socket) {
     socket = io();
   }
@@ -12,19 +12,19 @@ export default function useGlobalSocket(callback = null, memo = []) {
     if (callback) {
       const ioEventHandlers = {};
       const publicIo = {
-        ...io,
+        ...socket,
         on: (ev, handler) => {
           if (!ioEventHandlers[ev]) {
             ioEventHandlers[ev] = new Set();
           }
           ioEventHandlers[ev].add(handler);
-          io.on(ev, handler);
+          socket.on(ev, handler);
         },
         removeListener: (ev, handler) => {
           if (ioEventHandlers[ev]) {
             ioEventHandlers[ev].delete(handler);
           }
-          io[ev].removeListener(ev, handler);
+          socket[ev].removeListener(ev, handler);
         },
       };
 
@@ -32,7 +32,7 @@ export default function useGlobalSocket(callback = null, memo = []) {
 
       return () => {
         Object.keys(ioEventHandlers).forEach((ev) => {
-          ioEventHandlers[ev].forEach((x) => io.removeListener(ev, x));
+          ioEventHandlers[ev].forEach((x) => socket.removeListener(ev, x));
         });
       };
     }

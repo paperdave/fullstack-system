@@ -1,9 +1,19 @@
 import { __update as update } from '@fullstack-system';
 
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+
+// If theres a static folder, express.static() it
+const staticFolder = path.join(process.cwd(), 'src/static');
+if(fs.existsSync(staticFolder)) {
+  app.use(
+    express.static(staticFolder)
+  );
+}
 
 // Create Client Compiler
 const webpack = require('webpack');
@@ -41,6 +51,7 @@ update('io', {
     io[ev].removeListener(ev, handler);
   },
 });
+
 let clientRouter = express.Router();
 update('app', clientRouter);
 
