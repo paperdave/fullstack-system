@@ -1,7 +1,7 @@
 {
   "name": "fullstack-system",
   "description": "A build and development system for creating Client+Server applications with Socket.IO, React, and Express.",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "author": "Dave Caruso",
   "license": "MIT",
   "dependencies": {
@@ -33,5 +33,10 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },
-  "bin": "scripts/index.js"
+  "bin": "scripts/index.js",
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-dave": "^2.0.1"
+  }
 }

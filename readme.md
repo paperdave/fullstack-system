@@ -17,3 +17,9 @@ npm start
 
 ## Documentation
 You need two entry files in your project, one at `./src/server/index.js` and one at `./src/client/index.js`. Right now you cannot have these in other places.
+
+## TODO
+- CUSTOM: `src/index.html` Replace default blank template
+- CUSTOM: `src/static` Extra static files
+- CUSTOM: Webpack Configs.
+- Fix logging in node console, it's crappy.

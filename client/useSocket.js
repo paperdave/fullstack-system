@@ -1,32 +1,42 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { io } from '@fullstack-system';
 
-function reconnectWarning() {
-  console.error('Server HMR! You need to reload the page to reconnect the Socket.IO.');
-}
+let socket;
 
-export default function useSocket(callback, memo) {
-  const [socket, setSocket] = useState(() => {
-    const socket = io();
-    callback(socket);
-    socket.on('magic-loading::reconnect', reconnectWarning)
-    return socket;
-  });
+export default function useGlobalSocket(callback = null, memo = []) {
+  if(!socket) {
+    socket = io();
+  }
 
   useEffect(() => {
-    if(!socket) {
-      const socket = io();
-      callback(socket);
-      socket.on('magic-loading::reconnect', reconnectWarning)
-      setSocket(socket);
+    if (callback) {
+      const ioEventHandlers = {};
+      const publicIo = {
+        ...io,
+        on: (ev, handler) => {
+          if (!ioEventHandlers[ev]) {
+            ioEventHandlers[ev] = new Set();
+          }
+          ioEventHandlers[ev].add(handler);
+          io.on(ev, handler);
+        },
+        removeListener: (ev, handler) => {
+          if (ioEventHandlers[ev]) {
+            ioEventHandlers[ev].delete(handler);
+          }
+          io[ev].removeListener(ev, handler);
+        },
+      };
+
+      callback(publicIo);
+
+      return () => {
+        Object.keys(ioEventHandlers).forEach((ev) => {
+          ioEventHandlers[ev].forEach((x) => io.removeListener(ev, x));
+        });
+      };
     }
-    return () => {
-      if(socket) {
-        socket.disconnect()
-      }
-      setSocket(null);
-    }
-  }, memo);
+  }, [ callback ].concat(memo));
 
   return socket;
 }

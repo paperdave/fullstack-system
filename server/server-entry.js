@@ -1,9 +1,9 @@
 import { __update as update } from '@fullstack-system';
 
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+const express = require('express');
+const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 // Create Client Compiler
 const webpack = require('webpack');
@@ -13,14 +13,14 @@ const compiler = webpack(require('../config/client.webpack.config'));
 
 app.use(
   webpackDevMiddleware(compiler, {
-    publicPath: '/'
+    publicPath: '/',
   })
 );
 app.use(
   webpackHotMiddleware(compiler, {
-    log: console.log,
-    path: "/__webpack_hmr",
-    heartbeat: 10 * 1000
+    log: console.log, // eslint-disable-line no-console
+    path: '/__webpack_hmr',
+    heartbeat: 10 * 1000,
   })
 );
 
@@ -52,13 +52,13 @@ require('{SERVER_ENTRY}');
 
 if(module.hot) {
   module.hot.accept('{SERVER_ENTRY}', () => {
-    Object.keys(ioEventHandlers).forEach(ev => {
-      ioEventHandlers[ev].forEach(x => io.removeListener(ev, x));
+    Object.keys(ioEventHandlers).forEach((ev) => {
+      ioEventHandlers[ev].forEach((x) => io.removeListener(ev, x));
     });
     ioEventHandlers = {};
 
-    io.emit('magic-loading::reconnect');
-    Object.values(io.of("/").connected).forEach(function (s) {
+    io.emit('@fullstack-system::reconnect');
+    Object.values(io.of('/').connected).forEach(function (s) {
       s.disconnect(true);
     });
 
@@ -69,4 +69,5 @@ if(module.hot) {
   });
 }
 
+// eslint-disable-next-line no-console
 http.listen(8000, () => console.log('Running on http://localhost:8000/'));
