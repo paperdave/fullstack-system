@@ -1,11 +1,17 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const fs = require('fs');
 
 // eslint-disable-next-line no-underscore-dangle
 const SYSTEM_DIR = process.env.__SYSTEM_DIR;
 const SOURCE_DIR = process.cwd();
 const development = process.env.NODE_ENV !== 'production';
+
+let indexHTMLPath = path.join(SYSTEM_DIR, 'index.html');
+if(fs.existsSync(path.join(SOURCE_DIR, 'index.html'))) {
+  indexHTMLPath = path.join(SOURCE_DIR, 'index.html');
+}
 
 module.exports = {
   entry: [
@@ -36,7 +42,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: path.join(SYSTEM_DIR, 'index.html'),
+      template: indexHTMLPath,
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
