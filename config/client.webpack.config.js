@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const fs = require('fs');
+const deepmerge = require('deepmerge');
 
 // eslint-disable-next-line no-underscore-dangle
 const SYSTEM_DIR = process.env.__SYSTEM_DIR;
@@ -13,7 +14,15 @@ if(fs.existsSync(path.join(SOURCE_DIR, 'index.html'))) {
   indexHTMLPath = path.join(SOURCE_DIR, 'index.html');
 }
 
-module.exports = {
+let custom = {};
+if (fs.existsSync(path.join(SOURCE_DIR, 'client.webpack.config.js'))) {
+  custom = deepmerge(custom, require(path.join(SOURCE_DIR, 'client.webpack.config.js')));
+}
+if (fs.existsSync(path.join(SOURCE_DIR, 'webpack.config.js'))) {
+  custom = deepmerge(custom, require(path.join(SOURCE_DIR, 'webpack.config.js')));
+}
+
+module.exports = deepmerge({
   entry: [
     ...development ? [ 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000' ] : [],
     path.join(SOURCE_DIR, 'src/client/index.js'),
@@ -55,4 +64,6 @@ module.exports = {
     modules: [ path.join(SOURCE_DIR, 'node_modules') ],
   },
   mode: 'development',
-};
+}, custom, {
+  clone: false,
+});
