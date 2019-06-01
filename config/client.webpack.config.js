@@ -16,10 +16,10 @@ if(fs.existsSync(path.join(SOURCE_DIR, 'index.html'))) {
 
 let custom = {};
 if (fs.existsSync(path.join(SOURCE_DIR, 'client.webpack.config.js'))) {
-  custom = deepmerge(custom, require(path.join(SOURCE_DIR, 'client.webpack.config.js')));
+  custom = deepmerge(custom, eval('require')(path.join(SOURCE_DIR, 'client.webpack.config.js')));
 }
 if (fs.existsSync(path.join(SOURCE_DIR, 'webpack.config.js'))) {
-  custom = deepmerge(custom, require(path.join(SOURCE_DIR, 'webpack.config.js')));
+  custom = deepmerge(custom, eval('require')(path.join(SOURCE_DIR, 'webpack.config.js')));
 }
 
 module.exports = deepmerge({
