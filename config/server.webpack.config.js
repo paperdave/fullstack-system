@@ -60,7 +60,7 @@ module.exports = deepmerge({
       '@fullstack-system': path.join(SYSTEM_DIR, 'server/index.js'),
     },
     extensions: ['.js', '.json', '.jsx'],
-    modules: [ path.join(SOURCE_DIR, 'node_modules') ],
+    modules: [path.join(SOURCE_DIR, 'node_modules'), path.join(SOURCE_DIR, 'src')],
   },
   output: {
     path: development ? path.join(SYSTEM_DIR, '.temp') : path.join(SOURCE_DIR, 'dist'),

@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.3.2 [2019-05-31]
+- Change webpack to make absolute paths (inside src) work.
+
 # 1.3.1 [2019-05-31]
 - Bugfix: Removed warnings about config files.
 
@@ -20,4 +23,3 @@
 # 1.0.0 [2019-05-10]
 - Initial Version
 - Missing Build and Production commands.
-
