@@ -13,7 +13,3 @@ export function __update(name, value) {
     return;
   }
 }
-
-export function createState(initialValue) {
-  return initialValue;
-}

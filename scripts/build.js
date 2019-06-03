@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
-const cli = require('cli');
+const log = require('../log');
 const fs = require('fs-extra');
 
 // Clear Temp
@@ -26,14 +26,14 @@ function doClient() {
   return new Promise((done) => {
     const clientCompiler = webpack(require('../config/client.webpack.config'));
     clientCompiler.run((err, stats) => {
-      cli.info('Client Compiled!');
-      cli.info('Client Compile Time ' + (stats.endTime - stats.startTime) + 'ms');
-      cli.info('Client Hash: ' + stats.hash);
+      log.info('Client Compiled!');
+      log.info('Client Compile Time ' + (stats.endTime - stats.startTime) + 'ms');
+      log.info('Client Hash: ' + stats.hash);
       if (stats.hasWarnings()) {
-        cli.warn('Warnings during client compilation.');
+        log.warn('Warnings during client compilation.');
       }
       if (stats.hasErrors()) {
-        cli.error('Errors during client compilation.');
+        log.error('Errors during client compilation.');
       }
       done();
     });
@@ -44,14 +44,14 @@ function doServer() {
   return new Promise((done) => {
     const serverCompiler = webpack(require('../config/server.webpack.config'));
     serverCompiler.run((err, stats) => {
-      cli.info('Server Compiled!');
-      cli.info('Server Compile Time ' + (stats.endTime - stats.startTime) + 'ms');
-      cli.info('Server Hash: ' + stats.hash);
+      log.info('Server Compiled!');
+      log.info('Server Compile Time ' + (stats.endTime - stats.startTime) + 'ms');
+      log.info('Server Hash: ' + stats.hash);
       if (stats.hasWarnings()) {
-        cli.warn('Warnings during server compilation.');
+        log.warn('Warnings during server compilation.');
       }
       if (stats.hasErrors()) {
-        cli.error('Errors during server compilation.');
+        log.error('Errors during server compilation.');
       }
       done();
     });
@@ -62,5 +62,5 @@ Promise.all([
   doServer(),
   doClient(),
 ]).then(() => {
-  cli.info('Complete.');
+  log.done('Build Completed.');
 });

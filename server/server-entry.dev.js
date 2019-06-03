@@ -6,6 +6,7 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const log = require('../log');
 
 // If theres a static folder, express.static() it
 const staticFolder = path.join(process.cwd(), 'src/static');
@@ -80,5 +81,4 @@ if(module.hot) {
   });
 }
 
-// eslint-disable-next-line no-console
-http.listen(8000, () => console.log('Running on http://localhost:8000/'));
+http.listen(8000, () => log.name('Running on http://localhost:8000/'));

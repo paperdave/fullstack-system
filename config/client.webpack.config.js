@@ -60,14 +60,17 @@ module.exports = deepmerge({
     alias: {
       'react-dom': '@hot-loader/react-dom',
       '@fullstack-system': path.join(SYSTEM_DIR, 'client'),
+      'fullstack-system': path.join(SYSTEM_DIR, 'client'),
     },
     extensions: ['.jsx', '.js', '.json'],
-    mainFields: ['browser', 'module', 'main'],
-    modules: ['node_modules', path.join(SOURCE_DIR, 'node_modules'), path.join(SOURCE_DIR, 'src')],
+    mainFields: ['fullstack-system-client', 'browser', 'module', 'main'],
+    modules: [
+      path.join(SOURCE_DIR, 'src'),
+      path.join(SYSTEM_DIR, 'node_modules'),
+      path.join(SOURCE_DIR, 'node_modules'),
+    ],
   },
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
 }, custom, {
   clone: false,
 });
-
-console.log(module.exports.resolve);

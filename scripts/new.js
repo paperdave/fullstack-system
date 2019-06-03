@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const cli = require('cli');
+const log = require('../log');
 const fs = require('fs-extra');
 const path = require('path');
 const unzip = require('unzip');
@@ -20,7 +21,7 @@ runSequence([
   // Validate Project Name
   async() => {
     if (!cli.args[0]) {
-      cli.error('Missing Project Name');
+      log.error('Missing Project Name');
       throw 0;
     }
 
@@ -28,17 +29,17 @@ runSequence([
 
     if (!validate.validForNewPackages) {
       if (validate.errors) {
-        validate.errors.forEach((x) => cli.error('An npm package ' + x));
+        validate.errors.forEach((x) => log.error('An npm package ' + x));
       }
       if (validate.warnings) {
-        validate.warnings.forEach((x) => cli.error('An npm package ' + x));
+        validate.warnings.forEach((x) => log.error('An npm package ' + x));
       }
       throw 0;
     }
   },
   // Create Folder
   async() => {
-    cli.info(`Creating new project "${cli.args[0]}"`);
+    log.info(`Creating new project "${cli.args[0]}"`);
     await fs.mkdirs(cli.args[0]);
   },
   // Unzip Template
