@@ -18,9 +18,11 @@ if (fs.existsSync(path.join(SOURCE_DIR, 'webpack.config.js'))) {
   custom = deepmerge(custom, require(path.join(SOURCE_DIR, 'webpack.config.js')));
 }
 
+console.log(path.join(SOURCE_DIR, 'node_modules'));
 
 module.exports = deepmerge({
   entry: [
+    '@babel/polyfill',
     ...development ? ['webpack/hot/poll?1000'] : [],
     path.join(SYSTEM_DIR, '.temp/webpack-server-entry.js'),
   ],
@@ -60,13 +62,14 @@ module.exports = deepmerge({
       '@fullstack-system': path.join(SYSTEM_DIR, 'server/index.js'),
     },
     extensions: ['.js', '.json', '.jsx'],
-    modules: [path.join(SOURCE_DIR, 'node_modules'), path.join(SOURCE_DIR, 'src')],
+    mainFields: ['browser', 'module', 'main'],
+    modules: ['node_modules', path.join(SOURCE_DIR, 'node_modules'), path.join(SOURCE_DIR, 'src')],
   },
   output: {
     path: development ? path.join(SYSTEM_DIR, '.temp') : path.join(SOURCE_DIR, 'dist'),
     filename: 'server.js',
   },
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   node: {
     __dirname: true,
   },

@@ -1,11 +1,13 @@
 {
   "name": "fullstack-system",
   "description": "A build and development system for creating Client+Server applications with Socket.IO, React, and Express.",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "author": "Dave Caruso",
   "license": "MIT",
   "dependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@hot-loader/react-dom": "^16.8.6",

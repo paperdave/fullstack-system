@@ -11,7 +11,7 @@ const SERVER_ENTRY = path.join(process.cwd(), './src/server').replace(/\\/g, '\\
 
 fs.writeFileSync(
   path.join(__dirname, '../.temp/webpack-server-entry.js'),
-  fs.readFileSync(path.join(__dirname, '../server/server-entry.js'))
+  fs.readFileSync(path.join(__dirname, '../server/server-entry.dev.js'))
     .toString()
     // Replace to make webpack happy!
     .replace(/'\{SERVER_ENTRY\}'/g, `'${SERVER_ENTRY}'`),

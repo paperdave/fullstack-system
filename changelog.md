@@ -1,5 +1,9 @@
 # Changelog
 
+# 1.4.0 [2019-06-01]
+- Add build script
+- Various babel plugins enabled by default now.
+
 # 1.3.2 [2019-05-31]
 - Change webpack to make absolute paths (inside src) work.
 

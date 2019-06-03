@@ -24,6 +24,7 @@ if (fs.existsSync(path.join(SOURCE_DIR, 'webpack.config.js'))) {
 
 module.exports = deepmerge({
   entry: [
+    '@babel/polyfill',
     ...development ? ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000'] : [],
     path.join(SOURCE_DIR, 'src/client/index.js'),
   ],
@@ -61,9 +62,12 @@ module.exports = deepmerge({
       '@fullstack-system': path.join(SYSTEM_DIR, 'client'),
     },
     extensions: ['.jsx', '.js', '.json'],
-    modules: [path.join(SOURCE_DIR, 'node_modules'), path.join(SOURCE_DIR, 'src')],
+    mainFields: ['browser', 'module', 'main'],
+    modules: ['node_modules', path.join(SOURCE_DIR, 'node_modules'), path.join(SOURCE_DIR, 'src')],
   },
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
 }, custom, {
   clone: false,
 });
+
+console.log(module.exports.resolve);

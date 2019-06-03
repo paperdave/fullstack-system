@@ -13,4 +13,7 @@ module.exports = deepmerge({
     ['@babel/env', { 'modules': false }],
     '@babel/react',
   ],
+  plugins: [
+    '@babel/plugin-syntax-dynamic-import'
+  ]
 }, custom);
