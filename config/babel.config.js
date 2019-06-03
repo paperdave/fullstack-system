@@ -10,7 +10,7 @@ if (fs.existsSync(path.join(SOURCE_DIR, 'babel.config.js'))) {
 
 module.exports = deepmerge({
   presets: [
-    ['@babel/env', { 'modules': false } ],
+    ['@babel/env', { 'modules': false }],
     '@babel/react',
   ],
 }, custom);

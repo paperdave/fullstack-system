@@ -21,16 +21,16 @@ if (fs.existsSync(path.join(SOURCE_DIR, 'webpack.config.js'))) {
 
 module.exports = deepmerge({
   entry: [
-    ...development ? [ 'webpack/hot/poll?1000' ] : [],
+    ...development ? ['webpack/hot/poll?1000'] : [],
     path.join(SYSTEM_DIR, '.temp/webpack-server-entry.js'),
   ],
   watch: development,
   target: 'node',
-  externals: [ nodeExternals({
-    whitelist: [ 'webpack/hot/poll?1000' ],
-  }) ],
+  externals: [nodeExternals({
+    whitelist: ['webpack/hot/poll?1000'],
+  })],
   module: {
-    rules: [ {
+    rules: [{
       test: /\.js?$/,
       use: {
         loader: require.resolve('babel-loader'),
@@ -39,7 +39,7 @@ module.exports = deepmerge({
         },
       },
       exclude: /node_modules/,
-    } ],
+    }],
   },
   plugins: [
     ...development ? [

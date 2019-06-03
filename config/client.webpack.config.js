@@ -24,7 +24,7 @@ if (fs.existsSync(path.join(SOURCE_DIR, 'webpack.config.js'))) {
 
 module.exports = deepmerge({
   entry: [
-    ...development ? [ 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000' ] : [],
+    ...development ? ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000'] : [],
     path.join(SOURCE_DIR, 'src/client/index.js'),
   ],
   output: {
