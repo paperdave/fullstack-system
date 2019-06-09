@@ -1,4 +1,4 @@
-import { __update as update } from '@fullstack-system';
+import { __update as update } from 'fullstack-system';
 
 const fs = require('fs');
 const path = require('path');

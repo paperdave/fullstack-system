@@ -3,6 +3,8 @@ const path = require('path');
 const log = require('../log');
 const fs = require('fs-extra');
 
+const start = Date.now();
+
 // Clear Temp
 fs.removeSync(path.join(__dirname, '../.temp'));
 fs.mkdirsSync(path.join(__dirname, '../.temp'));
@@ -28,12 +30,21 @@ function doClient() {
     clientCompiler.run((err, stats) => {
       log.info('Client Compiled!');
       log.info('Client Compile Time ' + (stats.endTime - stats.startTime) + 'ms');
-      log.info('Client Hash: ' + stats.hash);
       if (stats.hasWarnings()) {
         log.warn('Warnings during client compilation.');
       }
+      if (stats.compilation.warnings) {
+        stats.compilation.warnings.forEach((warn) => {
+          log.warn(warn);
+        });
+      }
       if (stats.hasErrors()) {
         log.error('Errors during client compilation.');
+      }
+      if (stats.compilation.errors) {
+        stats.compilation.errors.forEach((err) => {
+          log.error(err);
+        });
       }
       done();
     });
@@ -46,12 +57,21 @@ function doServer() {
     serverCompiler.run((err, stats) => {
       log.info('Server Compiled!');
       log.info('Server Compile Time ' + (stats.endTime - stats.startTime) + 'ms');
-      log.info('Server Hash: ' + stats.hash);
       if (stats.hasWarnings()) {
         log.warn('Warnings during server compilation.');
       }
+      if (stats.compilation.warnings) {
+        stats.compilation.warnings.forEach((warn) => {
+          log.warn(warn);
+        });
+      }
       if (stats.hasErrors()) {
         log.error('Errors during server compilation.');
+      }
+      if (stats.compilation.errors) {
+        stats.compilation.errors.forEach((err) => {
+          log.error(err);
+        });
       }
       done();
     });
@@ -62,5 +82,5 @@ Promise.all([
   doServer(),
   doClient(),
 ]).then(() => {
-  log.done('Build Completed.');
+  log.done(`Build Completed. Took ${Date.now() - start}ms`);
 });

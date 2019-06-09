@@ -10,10 +10,20 @@ if (fs.existsSync(path.join(SOURCE_DIR, 'babel.config.js'))) {
 
 module.exports = deepmerge({
   presets: [
-    ['@babel/env', { 'modules': false }],
+    [
+      '@babel/env',
+      {
+        modules: false,
+        targets: {
+          node: 8,
+        },
+        useBuiltIns: 'usage',
+        corejs: 3,
+      },
+    ],
     '@babel/react',
   ],
   plugins: [
-    '@babel/plugin-syntax-dynamic-import'
-  ]
+    '@babel/plugin-syntax-dynamic-import',
+  ],
 }, custom);

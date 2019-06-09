@@ -2,7 +2,7 @@ import socketIO from 'socket.io-client';
 
 // TODO: Figure out socket re-connection (mainly it's gonna
 // be about state maintaining on the server).
-export function io(...args) {
+export function connect(...args) {
   const socket = socketIO(...args);
   socket.on('@fullstack-system::reconnect', () => {
     // eslint-disable-next-line

@@ -1,4 +1,4 @@
-import { __update as update } from '@fullstack-system';
+import { __update as update } from 'fullstack-system';
 
 const fs = require('fs');
 const path = require('path');
@@ -22,15 +22,54 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const compiler = webpack(require('../config/client.webpack.config'));
 
+const watchCompiler = compiler.watch.bind(compiler);
+compiler.watch = (opt, callback, ...etc) => {
+  watchCompiler(opt, (err, stats, ...etc) => {
+    if (err) {
+      log.client('Compiled With Errors.');
+    } else {
+      log.client('Compiled Successfully.');
+    }
+
+    if (stats.compilation.warnings) {
+      stats.compilation.warnings.forEach((warn) => {
+        log.clientWarn(warn);
+      });
+    }
+    if (stats.compilation.errors) {
+      stats.compilation.errors.forEach((err) => {
+        log.clientError(err);
+      });
+    }
+
+    callback(err, stats, ...etc);
+  }, ...etc);
+};
+
 app.use(
   webpackDevMiddleware(compiler, {
     publicPath: '/',
+    logLevel: 'silent',
+    logger: {
+      methodFactory: () => () => {},
+      info: () => {},
+      warn: () => {},
+      debug: () => {},
+      error: () => {},
+      setLevel: () => {},
+      disableAll: () => {},
+      enableAll: () => {},
+      getLevel: () => {},
+      setDefaultLevel: () => {},
+      trace: () => {},
+    },
   })
 );
 app.use(
   webpackHotMiddleware(compiler, {
-    log: console.log, // eslint-disable-line no-console
+    log: () => {},
     path: '/__webpack_hmr',
+    logLevel: 'silent',
     heartbeat: 10 * 1000,
   })
 );

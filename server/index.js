@@ -1,4 +1,3 @@
-// aliased to "@fullstack-system"
 export let io;
 export let app;
 

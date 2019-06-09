@@ -1,5 +1,14 @@
 # Changelog
 
+# 2.0.0 [2019-06-08]
+- Added `clean` and production `commands`
+- Rewrote starter template
+- Clean up logging
+- Fix some webpack configuration problems.
+- Typescript Defs
+- **breaking change**: You import `fullstack-system` instead of `@fullstack-system`
+- **breaking change**: You import `connect` on client instead of `io`
+
 # 1.4.0 [2019-06-01]
 - Add build script
 - Various babel plugins enabled by default now.

@@ -1,6 +1,6 @@
-const npmRunScript = require('npm-run-script');
 const path = require('path');
 const fs = require('fs-extra');
+const log = require('../log');
 
 // Clear Temp
 fs.removeSync(path.join(__dirname, '../.temp'));
@@ -18,6 +18,35 @@ fs.writeFileSync(
 );
 
 // Webpack Watch It
-npmRunScript(
-  `webpack --config "${path.join(__dirname, '../config/server.webpack.config.js')}"`
+const webpack = require('webpack');
+const compiler = webpack(require('../config/server.webpack.config'));
+
+let first = true;
+
+compiler.watch(
+  {
+    aggregateTimeout: 200,
+  },
+  (err, stats) => {
+    if(first) {
+      first = false;
+      return;
+    }
+    if (err) {
+      log.server('Compiled with errors');
+    } else {
+      log.server('Compiled Successfully');
+    }
+
+    if (stats.compilation.warnings) {
+      stats.compilation.warnings.forEach((warn) => {
+        log.serverWarn(warn);
+      });
+    }
+    if (stats.compilation.errors) {
+      stats.compilation.errors.forEach((err) => {
+        log.serverError(err);
+      });
+    }
+  }
 );

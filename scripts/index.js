@@ -4,6 +4,6 @@ const cli = require('cli');
 cli.setApp('fullstack-system', require('../package.json').version);
 cli.enable('version');
 
-cli.parse(null, ['dev', 'build', 'new', 'production']);
+cli.parse(null, ['dev', 'build', 'new', 'production', 'clean']);
 
 require('./' + cli.command);

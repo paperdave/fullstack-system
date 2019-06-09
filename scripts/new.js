@@ -13,6 +13,7 @@ async function runSequence(promises) {
       await promise();
     } catch (error) {
       /* Quit */
+      return;
     }
   }
 }

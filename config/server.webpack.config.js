@@ -18,19 +18,23 @@ if (fs.existsSync(path.join(SOURCE_DIR, 'webpack.config.js'))) {
   custom = deepmerge(custom, require(path.join(SOURCE_DIR, 'webpack.config.js')));
 }
 
-console.log(path.join(SOURCE_DIR, 'node_modules'));
-
 module.exports = deepmerge({
   entry: [
-    '@babel/polyfill',
     ...development ? ['webpack/hot/poll?1000'] : [],
     path.join(SYSTEM_DIR, '.temp/webpack-server-entry.js'),
   ],
   watch: development,
   target: 'node',
-  externals: [nodeExternals({
-    whitelist: ['webpack/hot/poll?1000'],
-  })],
+  externals: [
+    nodeExternals({
+      whitelist: ['webpack/hot/poll?1000', 'fullstack-system'],
+      modulesDir: path.join(SYSTEM_DIR, 'node_modules'),
+    }),
+    nodeExternals({
+      whitelist: ['webpack/hot/poll?1000', 'fullstack-system'],
+      modulesDir: path.join(SOURCE_DIR, 'node_modules'),
+    }),
+  ],
   module: {
     rules: [{
       test: /\.js?$/,
@@ -40,7 +44,7 @@ module.exports = deepmerge({
           extends: require.resolve('./babel.config'),
         },
       },
-      exclude: /node_modules/,
+      exclude: /node_modules|fullstack-system\/config\/client\.webpack\.config\.js/,
     }],
   },
   plugins: [
@@ -59,7 +63,6 @@ module.exports = deepmerge({
   ],
   resolve: {
     alias: {
-      '@fullstack-system': path.join(SYSTEM_DIR, 'server/index.js'),
       'fullstack-system': path.join(SYSTEM_DIR, 'server/index.js'),
     },
     extensions: ['.js', '.json', '.jsx'],
