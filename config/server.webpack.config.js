@@ -37,7 +37,7 @@ module.exports = deepmerge({
   ],
   module: {
     rules: [{
-      test: /\.js?$/,
+      test: /\.jsx?$/,
       use: {
         loader: require.resolve('babel-loader'),
         options: {
