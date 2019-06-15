@@ -1,11 +1,14 @@
 # Changelog
 
+# 2.0.5 [2019-06-08]
+- Downgrade `core-js` to version 2
+
 # 2.0.0 [2019-06-08]
-- Added `clean` and production `commands`
+- Added `clean` and `production` commands
 - Rewrote starter template
 - Clean up logging
 - Fix some webpack configuration problems.
-- Typescript Defs
+- Typescript definitions
 - **breaking change**: You import `fullstack-system` instead of `@fullstack-system`
 - **breaking change**: You import `connect` on client instead of `io`
 
