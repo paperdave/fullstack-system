@@ -18,7 +18,7 @@ module.exports = deepmerge({
           node: 8,
         },
         useBuiltIns: 'usage',
-        corejs: 2,
+        corejs: 3,
       },
     ],
     '@babel/react',

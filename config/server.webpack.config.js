@@ -27,11 +27,11 @@ module.exports = deepmerge({
   target: 'node',
   externals: [
     nodeExternals({
-      whitelist: ['webpack/hot/poll?1000', 'fullstack-system'],
+      whitelist: ['webpack/hot/poll?1000', 'fullstack-system', 'core-js'],
       modulesDir: path.join(SYSTEM_DIR, 'node_modules'),
     }),
     nodeExternals({
-      whitelist: ['webpack/hot/poll?1000', 'fullstack-system'],
+      whitelist: ['webpack/hot/poll?1000', 'fullstack-system', 'core-js'],
       modulesDir: path.join(SOURCE_DIR, 'node_modules'),
     }),
   ],

@@ -1,7 +1,7 @@
 # Changelog
 
-# 2.0.5 [2019-06-08]
-- Downgrade `core-js` to version 2
+# 2.0.6 [2019-06-08]
+- Fix Core JS 2 and 3 problems.
 
 # 2.0.0 [2019-06-08]
 - Added `clean` and `production` commands
