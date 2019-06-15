@@ -65,6 +65,7 @@ module.exports = deepmerge({
       path.join(SOURCE_DIR, 'src'),
       path.join(SYSTEM_DIR, 'node_modules'),
       path.join(SOURCE_DIR, 'node_modules'),
+      path.join(SOURCE_DIR, 'node_modules/@babel/runtime-corejs2/node_modules'),
     ],
   },
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
