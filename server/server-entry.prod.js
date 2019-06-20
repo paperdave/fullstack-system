@@ -7,6 +7,15 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const log = require('../log');
+const cli = require('cli');
+
+const packageJSON = eval('require("../package.json")');
+
+cli.setApp(packageJSON.name, packageJSON.version);
+cli.enable('version');
+
+const params = cli.parse({ port: ['p', 'The port to run the server on.', 'NUMBER'] });
+const port = params.port;
 
 // If theres a static folder, express.static() it
 const staticFolder = path.join(process.cwd(), 'src/static');
@@ -52,4 +61,4 @@ require('{SERVER_ENTRY}');
 
 app.use(clientRouter);
 
-http.listen(8000, () => log.name('Running production server on http://localhost:8000/'));
+http.listen(port, () => log.name('Running production server on http://localhost:' + port + '/'));

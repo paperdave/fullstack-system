@@ -120,4 +120,9 @@ if(module.hot) {
   });
 }
 
-http.listen(8000, () => log.name('Running on http://localhost:8000/'));
+const port = process.env.PORT || process.env.NODE_GLOBAL_PORT || 8000;
+
+http.listen(
+  port,
+  () => log.name('Running on http://localhost:' + port + '/')
+);
