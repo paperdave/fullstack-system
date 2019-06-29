@@ -2,6 +2,8 @@ const path = require('path');
 const fs = require('fs-extra');
 const log = require('../log');
 
+process.env.NODE_GLOBAL_PORT = global.port;
+
 // Clear Temp
 fs.removeSync(path.join(__dirname, '../.temp'));
 fs.mkdirsSync(path.join(__dirname, '../.temp'));

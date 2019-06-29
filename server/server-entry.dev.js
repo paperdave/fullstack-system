@@ -8,6 +8,13 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const log = require('../log');
 
+let clientRouter = express.Router();
+update('app', clientRouter);
+
+app.use((...args) => {
+  return clientRouter(...args);
+});
+
 // If theres a static folder, express.static() it
 const staticFolder = path.join(process.cwd(), 'src/static');
 if(fs.existsSync(staticFolder)) {
@@ -92,13 +99,6 @@ update('io', {
   },
 });
 
-let clientRouter = express.Router();
-update('app', clientRouter);
-
-app.use((...args) => {
-  return clientRouter(...args);
-});
-
 require('{SERVER_ENTRY}');
 
 if(module.hot) {
@@ -120,4 +120,9 @@ if(module.hot) {
   });
 }
 
-http.listen(8000, () => log.name('Running on http://localhost:8000/'));
+const port = process.env.PORT || process.env.NODE_GLOBAL_PORT || 8000;
+
+http.listen(
+  port,
+  () => log.name('Running on http://localhost:' + port + '/')
+);
