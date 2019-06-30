@@ -17,9 +17,9 @@ cli.enable('version');
 const params = cli.parse({ port: ['p', 'The port to run the server on.', 'NUMBER'] });
 const port = params.port || process.env.PORT || 8000;
 
-const clientRouter = express.Router();
-update('app', clientRouter);
-app.use(clientRouter);
+const clientStartRouter = express.Router();
+update('appStart', clientStartRouter);
+app.use(clientStartRouter);
 
 // If theres a static folder, express.static() it
 const staticFolder = path.join(process.cwd(), 'src/static');
@@ -57,6 +57,10 @@ update('io', {
     io[ev].removeListener(ev, handler);
   },
 });
+
+const clientRouter = express.Router();
+update('app', clientRouter);
+app.use(clientRouter);
 
 require('{SERVER_ENTRY}');
 
