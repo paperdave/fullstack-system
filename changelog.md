@@ -1,5 +1,8 @@
 # Changelog
 
+# 2.2.6 [2019-06-30]
+- Fix custom webpack plugins
+
 # 2.2.3 [2019-06-29]
 - Change routing slightly
 
