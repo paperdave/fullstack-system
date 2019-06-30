@@ -1,4 +1,14 @@
 const path = require('path');
+
+// eslint-disable-next-line no-underscore-dangle
+const SYSTEM_DIR = path.join(__dirname, '../');
+const SOURCE_DIR = process.cwd();
+const delim = process.platform === 'win32' ? ';' : ':';
+process.env.NODE_PATH += delim + SOURCE_DIR + '/node_modules/';
+process.env.NODE_PATH += delim + SYSTEM_DIR + '/node_modules/';
+// eslint-disable-next-line no-underscore-dangle
+require('module').Module._initPaths();
+
 const fs = require('fs-extra');
 const log = require('../log');
 

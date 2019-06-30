@@ -22,7 +22,7 @@ fs.writeFileSync(
 
 process.env.NODE_ENV = 'production';
 // eslint-disable-next-line no-underscore-dangle
-process.env.__SYSTEM_DIR = path.join(__dirname, '../');
+process.env.__SYSTEM_DIR = path.join(__dirname, '..');
 
 function doClient() {
   return new Promise((done) => {

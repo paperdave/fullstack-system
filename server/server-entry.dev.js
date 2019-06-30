@@ -1,5 +1,14 @@
 import { __update as update } from 'fullstack-system';
 
+// eslint-disable-next-line no-underscore-dangle
+const SYSTEM_DIR = process.env.__SYSTEM_DIR;
+const SOURCE_DIR = process.cwd();
+const delim = process.platform === 'win32' ? ';' : ':';
+process.env.NODE_PATH += delim + SOURCE_DIR + '/node_modules/';
+process.env.NODE_PATH += delim + SYSTEM_DIR + '/node_modules/';
+// eslint-disable-next-line no-underscore-dangle
+require('module').Module._initPaths();
+
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
@@ -9,11 +18,11 @@ const io = require('socket.io')(http);
 const log = require('../log');
 
 let clientRouter = express.Router();
+let clientStartRouter = express.Router();
 update('app', clientRouter);
+update('appStart', clientStartRouter);
 
-app.use((...args) => {
-  return clientRouter(...args);
-});
+app.use(clientStartRouter);
 
 // If theres a static folder, express.static() it
 const staticFolder = path.join(process.cwd(), 'src/static');
@@ -56,7 +65,7 @@ compiler.watch = (opt, callback, ...etc) => {
 app.use(
   webpackDevMiddleware(compiler, {
     publicPath: '/',
-    logLevel: 'silent',
+    logLevel: 'warn',
     logger: {
       methodFactory: () => () => {},
       info: () => {},
@@ -115,10 +124,16 @@ if(module.hot) {
 
     clientRouter = express.Router();
     update('app', clientRouter);
+    clientStartRouter = express.Router();
+    update('appStart', clientStartRouter);
 
     require('{SERVER_ENTRY}');
   });
 }
+
+app.use((...args) => {
+  return clientRouter(...args);
+});
 
 const port = process.env.PORT || process.env.NODE_GLOBAL_PORT || 8000;
 
