@@ -1,5 +1,11 @@
 # Changelog
 
+# 2.2.3 [2019-06-29]
+- Change routing slightly
+
+# 2.2.2 [2019-06-23]
+- Add `-p` to change ports, and also looks at `$PORT`
+
 # 2.0.5 [2019-06-08]
 - Downgrade `core-js` to version 2
 

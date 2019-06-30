@@ -15,7 +15,11 @@ cli.setApp(packageJSON.name, packageJSON.version);
 cli.enable('version');
 
 const params = cli.parse({ port: ['p', 'The port to run the server on.', 'NUMBER'] });
-const port = params.port;
+const port = params.port || process.env.PORT || 8000;
+
+const clientRouter = express.Router();
+update('app', clientRouter);
+app.use(clientRouter);
 
 // If theres a static folder, express.static() it
 const staticFolder = path.join(process.cwd(), 'src/static');
@@ -54,11 +58,6 @@ update('io', {
   },
 });
 
-const clientRouter = express.Router();
-update('app', clientRouter);
-
 require('{SERVER_ENTRY}');
-
-app.use(clientRouter);
 
 http.listen(port, () => log.name('Running production server on http://localhost:' + port + '/'));

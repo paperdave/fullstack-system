@@ -8,6 +8,13 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const log = require('../log');
 
+let clientRouter = express.Router();
+update('app', clientRouter);
+
+app.use((...args) => {
+  return clientRouter(...args);
+});
+
 // If theres a static folder, express.static() it
 const staticFolder = path.join(process.cwd(), 'src/static');
 if(fs.existsSync(staticFolder)) {
@@ -90,13 +97,6 @@ update('io', {
     }
     io[ev].removeListener(ev, handler);
   },
-});
-
-let clientRouter = express.Router();
-update('app', clientRouter);
-
-app.use((...args) => {
-  return clientRouter(...args);
 });
 
 require('{SERVER_ENTRY}');
