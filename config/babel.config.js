@@ -25,5 +25,6 @@ module.exports = deepmerge({
   ],
   plugins: [
     '@babel/plugin-syntax-dynamic-import',
+    'react-hot-loader/babel',
   ],
 }, custom);
