@@ -32,7 +32,7 @@ if(fs.existsSync(staticFolder)) {
 const s = express.static(eval('__dirname'));
 app.use(
   (req, res, next) => {
-    if(req.url !== '/server.js') {
+    if(req.url !== '/server.js' || req.url !== '/server.js.map') {
       s(req, res, next);
     } else {
       next();
