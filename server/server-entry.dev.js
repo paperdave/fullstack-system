@@ -135,7 +135,7 @@ app.use((...args) => {
   return clientRouter(...args);
 });
 
-const port = process.env.PORT || process.env.NODE_GLOBAL_PORT || 8000;
+const port = process.env.PORT || parseInt(process.env.NODE_GLOBAL_PORT) || 8000;
 
 http.listen(
   port,
