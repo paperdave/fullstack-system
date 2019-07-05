@@ -1,5 +1,11 @@
 # Changelog
 
+# 2.3.0
+- `webpack.client.config.js` and `webpack.server.config.js` is now recognized (may help with file sorting).
+- added global define `process.env.PRODUCTION` (boolean)
+- in a webpack config, you can use shorthand property `loaders`, which is merged with `module.rules`.
+- in a webpack config, you can use custom property `html` to override options to HtmlWebPackPlugin
+
 # 2.2.6 [2019-06-30]
 - Fix custom webpack plugins
 

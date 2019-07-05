@@ -10,15 +10,18 @@ const development = process.env.NODE_ENV !== 'production';
 const deepmerge = require('deepmerge');
 const fs = require('fs');
 
-let custom = {};
+let config = {};
 if (fs.existsSync(path.join(SOURCE_DIR, 'server.webpack.config.js'))) {
-  custom = deepmerge(custom, require(path.join(SOURCE_DIR, 'server.webpack.config.js')), { clone: false });
+  config = deepmerge(config, require(path.join(SOURCE_DIR, 'server.webpack.config.js')), { clone: false });
+}
+if (fs.existsSync(path.join(SOURCE_DIR, 'webpack.server.config.js'))) {
+  config = deepmerge(config, require(path.join(SOURCE_DIR, 'webpack.server.config.js')), { clone: false });
 }
 if (fs.existsSync(path.join(SOURCE_DIR, 'webpack.config.js'))) {
-  custom = deepmerge(custom, require(path.join(SOURCE_DIR, 'webpack.config.js')), { clone: false });
+  config = deepmerge(config, require(path.join(SOURCE_DIR, 'webpack.config.js')), { clone: false });
 }
 
-module.exports = deepmerge({
+config = deepmerge({
   entry: [
     ...development ? ['webpack/hot/poll?1000'] : [],
     path.join(SYSTEM_DIR, '.temp/webpack-server-entry.js'),
@@ -52,13 +55,10 @@ module.exports = deepmerge({
       new StartServerPlugin('server.js'),
       new webpack.HotModuleReplacementPlugin(),
     ] : [],
-    new webpack.NamedModulesPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env': {
-        '__SYSTEM_DIR': JSON.stringify(SYSTEM_DIR),
-        'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      },
+      'process.env.__SYSTEM_DIR': JSON.stringify(SYSTEM_DIR),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.PRODUCTION': JSON.stringify(process.env.NODE_ENV === 'production'),
     }),
   ],
   resolve: {
@@ -71,6 +71,7 @@ module.exports = deepmerge({
       path.join(SOURCE_DIR, 'src'),
       path.join(SYSTEM_DIR, 'node_modules'),
       path.join(SOURCE_DIR, 'node_modules'),
+      path.join(SOURCE_DIR, 'node_modules/@babel/runtime-corejs2/node_modules'),
     ],
   },
   output: {
@@ -81,6 +82,24 @@ module.exports = deepmerge({
   node: {
     __dirname: true,
   },
-}, custom, {
+  optimization: {
+    namedModules: true,
+    noEmitOnErrors: true,
+  },
+}, config, {
   clone: false,
 });
+
+if (config.loaders) {
+  config = deepmerge(config, {
+    module: {
+      rules: config.loaders,
+    },
+  });
+  delete config.loaders;
+}
+if (config.html) {
+  delete config.html;
+}
+
+module.exports = config;

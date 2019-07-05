@@ -14,15 +14,24 @@ if(fs.existsSync(path.join(SOURCE_DIR, 'index.html'))) {
   indexHTMLPath = path.join(SOURCE_DIR, 'index.html');
 }
 
-let custom = {};
+let config = {};
 if (fs.existsSync(path.join(SOURCE_DIR, 'client.webpack.config.js'))) {
-  custom = deepmerge(custom, eval('require')(path.join(SOURCE_DIR, 'client.webpack.config.js')), { clone: false });
+  config = deepmerge(config, eval('require')(path.join(SOURCE_DIR, 'client.webpack.config.js')), { clone: false });
+}
+if (fs.existsSync(path.join(SOURCE_DIR, 'webpack.client.config.js'))) {
+  config = deepmerge(config, eval('require')(path.join(SOURCE_DIR, 'webpack.client.config.js')), { clone: false });
 }
 if (fs.existsSync(path.join(SOURCE_DIR, 'webpack.config.js'))) {
-  custom = deepmerge(custom, eval('require')(path.join(SOURCE_DIR, 'webpack.config.js')), { clone: false });
+  config = deepmerge(config, eval('require')(path.join(SOURCE_DIR, 'webpack.config.js')), { clone: false });
 }
 
-module.exports = deepmerge({
+let htmlPluginConfig = {};
+if (config.html) {
+  htmlPluginConfig = config.html;
+  delete config.html;
+}
+
+config = deepmerge({
   entry: [
     ...development ? ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000'] : [],
     path.join(SOURCE_DIR, 'src/client/index.js'),
@@ -52,6 +61,9 @@ module.exports = deepmerge({
   plugins: [
     new HtmlWebPackPlugin({
       template: indexHTMLPath,
+      hash: true,
+      minify: process.env.NODE_ENV === 'production',
+      ...htmlPluginConfig,
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
@@ -69,6 +81,18 @@ module.exports = deepmerge({
     ],
   },
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-}, custom, {
+}, config, {
   clone: false,
 });
+
+
+if (config.loaders) {
+  config = deepmerge(config, {
+    module: {
+      rules: config.loaders,
+    },
+  });
+  delete config.loaders;
+}
+
+module.exports = config;
