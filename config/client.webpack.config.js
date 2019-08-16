@@ -31,6 +31,13 @@ if (config.html) {
   delete config.html;
 }
 
+let enableReact = true;
+try {
+  eval('require.resolve("react")');
+} catch (error) {
+  enableReact = false;
+}
+
 config = deepmerge({
   entry: [
     ...development ? ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000'] : [],
@@ -69,7 +76,9 @@ config = deepmerge({
   ],
   resolve: {
     alias: {
-      'react-dom': '@hot-loader/react-dom',
+      ...enableReact && {
+        'react-dom': '@hot-loader/react-dom',
+      },
     },
     extensions: ['.jsx', '.js', '.json'],
     mainFields: ['fullstack-system-client', 'browser', 'module', 'main'],

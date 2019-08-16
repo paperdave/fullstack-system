@@ -8,6 +8,14 @@ if (fs.existsSync(path.join(SOURCE_DIR, 'babel.config.js'))) {
   custom = deepmerge(custom, require(path.join(SOURCE_DIR, 'babel.config.js')));
 }
 
+let enableReact = true;
+try {
+  eval('require.resolve("react")');
+} catch (error) {
+  enableReact = false;
+}
+
+
 module.exports = deepmerge({
   presets: [
     [
@@ -25,6 +33,8 @@ module.exports = deepmerge({
   ],
   plugins: [
     '@babel/plugin-syntax-dynamic-import',
-    'react-hot-loader/babel',
+    ...enableReact ? [
+      'react-hot-loader/babel',
+    ] : [],
   ],
 }, custom);

@@ -1,5 +1,8 @@
 # Changelog
 
+# 2.4.0
+- make react optional
+
 # 2.3.0
 - `webpack.client.config.js` and `webpack.server.config.js` is now recognized (may help with file sorting).
 - added global define `process.env.PRODUCTION` (boolean)
