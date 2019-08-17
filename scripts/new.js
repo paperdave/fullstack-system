@@ -45,8 +45,8 @@ runSequence([
   },
   // Unzip Template
   async() => {
-    console.log('Copying Starter Template...');
-    const zip = path.join(__dirname, '../templates/starter.zip');
+    console.log('Copying the ' + (cli.args[1] === 'typescript' ? 'TypeScript' : 'Starter') + ' Template...');
+    const zip = path.join(__dirname, '../templates/' + (cli.args[1] === 'typescript' ? 'typescript' : 'starter') + '.zip');
     const out = path.join(process.cwd(), './' + cli.args[0]);
 
     await new Promise((resolve) => {
@@ -59,7 +59,7 @@ runSequence([
     return new Promise((resolve, reject) => {
       process.chdir('./' + cli.args[0]);
 
-      const child = npmRunScript('npm i -D');
+      const child = npmRunScript('npm ci');
       child.once('error', (error) => {
         reject(error);
       });

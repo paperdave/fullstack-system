@@ -2,6 +2,8 @@ const webpack = require('webpack');
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
+const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 
 const SYSTEM_DIR = path.join(__dirname, '../');
 const SOURCE_DIR = process.cwd();
@@ -9,6 +11,8 @@ const development = process.env.NODE_ENV !== 'production';
 
 const deepmerge = require('deepmerge');
 const fs = require('fs');
+
+const tsEnabled = fs.existsSync(path.join(SOURCE_DIR, 'tsconfig.json'));
 
 let config = {};
 if (fs.existsSync(path.join(SOURCE_DIR, 'server.webpack.config.js'))) {
@@ -40,11 +44,14 @@ config = deepmerge({
   ],
   module: {
     rules: [{
-      test: /\.jsx?$/,
+      test: /\.(j|t)sx?$/,
       use: {
         loader: require.resolve('babel-loader'),
         options: {
           extends: require.resolve('./babel.config'),
+          cacheDirectory: true,
+          cacheCompression: !development,
+          compact: !development,
         },
       },
       exclude: /node_modules|fullstack-system\/config\/client\.webpack\.config\.js/,
@@ -60,12 +67,29 @@ config = deepmerge({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.PRODUCTION': JSON.stringify(process.env.NODE_ENV === 'production'),
     }),
+    tsEnabled && new ForkTsCheckerWebpackPlugin({
+      typescript: eval('require.resolve')('typescript'),
+      async: development,
+      useTypescriptIncrementalApi: true,
+      checkSyntacticErrors: true,
+      tsconfig: path.join(SOURCE_DIR, 'tsconfig.json'),
+      reportFiles: [
+        '**',
+        '!**/__tests__/**',
+        '!**/?(*.)(spec|test).*',
+        '!**/src/setupProxy.*',
+        '!**/src/setupTests.*',
+      ],
+      watch: path.join(SOURCE_DIR, 'src'),
+      // The formatter is invoked directly in WebpackDevServerUtils during development
+      formatter: typescriptFormatter,
+    }),
   ],
   resolve: {
     alias: {
       'fullstack-system': path.join(SYSTEM_DIR, 'server/index.js'),
     },
-    extensions: ['.js', '.json', '.jsx'],
+    extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
     mainFields: ['fullstack-system-server', 'browser', 'module', 'main'],
     modules: [
       path.join(SOURCE_DIR, 'src'),

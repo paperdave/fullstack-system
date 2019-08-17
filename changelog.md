@@ -1,5 +1,8 @@
 # Changelog
 
+# 2.5.0 [2019-08-16]
+- TypeScript Support
+
 # 2.4.0
 - make react optional
 

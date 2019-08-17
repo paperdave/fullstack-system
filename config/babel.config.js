@@ -3,16 +3,18 @@ const deepmerge = require('deepmerge');
 const fs = require('fs');
 const path = require('path');
 
+const tsEnabled = fs.existsSync(path.join(SOURCE_DIR, './tsconfig.json'));
+
 let custom = {};
 if (fs.existsSync(path.join(SOURCE_DIR, 'babel.config.js'))) {
   custom = deepmerge(custom, require(path.join(SOURCE_DIR, 'babel.config.js')));
 }
 
-let enableReact = true;
+let enableReactDom = true;
 try {
-  eval('require.resolve("react")');
+  eval('require.resolve("react-dom")');
 } catch (error) {
-  enableReact = false;
+  enableReactDom = false;
 }
 
 
@@ -33,8 +35,11 @@ module.exports = deepmerge({
   ],
   plugins: [
     '@babel/plugin-syntax-dynamic-import',
-    ...enableReact ? [
+    ...enableReactDom ? [
       'react-hot-loader/babel',
+    ] : [],
+    ...tsEnabled ? [
+      ['@babel/plugin-transform-typescript', { isTSX: true }],
     ] : [],
   ],
 }, custom);
