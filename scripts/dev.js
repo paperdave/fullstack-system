@@ -26,7 +26,7 @@ fs.writeFileSync(
   fs.readFileSync(path.join(__dirname, '../server/server-entry.dev.js'))
     .toString()
     // Replace to make webpack happy!
-    .replace(/'\{SERVER_ENTRY\}'/g, `'${SERVER_ENTRY}'`),
+    .replace(/'\{SERVER_ENTRY\}'/g, `'${SERVER_ENTRY}'`)
 );
 
 // Webpack Watch It

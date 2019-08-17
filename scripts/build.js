@@ -17,7 +17,7 @@ fs.writeFileSync(
   fs.readFileSync(path.join(__dirname, '../server/server-entry.prod.js'))
     .toString()
     // Replace to make webpack happy!
-    .replace(/'\{SERVER_ENTRY\}'/g, `'${SERVER_ENTRY}'`),
+    .replace(/'\{SERVER_ENTRY\}'/g, `'${SERVER_ENTRY}'`)
 );
 
 process.env.NODE_ENV = 'production';

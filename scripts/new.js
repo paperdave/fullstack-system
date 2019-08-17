@@ -45,8 +45,11 @@ runSequence([
   },
   // Unzip Template
   async() => {
-    console.log('Copying the ' + (cli.args[1] === 'typescript' ? 'TypeScript' : 'Starter') + ' Template...');
-    const zip = path.join(__dirname, '../templates/' + (cli.args[1] === 'typescript' ? 'typescript' : 'starter') + '.zip');
+    console.log(
+      'Copying the ' + (cli.args[1] === 'typescript' ? 'TypeScript' : 'Starter') + ' Template...'
+    );
+    const templateZipName = cli.args[1] === 'typescript' ? 'typescript' : 'starter';
+    const zip = path.join(__dirname, '../templates/' + templateZipName + '.zip');
     const out = path.join(process.cwd(), './' + cli.args[0]);
 
     await new Promise((resolve) => {
@@ -54,12 +57,20 @@ runSequence([
       stream.on('close', resolve);
     });
   },
+  // Set package name in package.json
+  async() => {
+    process.chdir('./' + cli.args[0]);
+
+    const json = await fs.readJSON('./package.json');
+
+    json.name = cli.args[0];
+
+    await fs.writeJSON('./package.json', json, { spaces: 2 });
+  },
   // Run NPM Install
   () => {
     return new Promise((resolve, reject) => {
-      process.chdir('./' + cli.args[0]);
-
-      const child = npmRunScript('npm ci');
+      const child = npmRunScript('npm i -D');
       child.once('error', (error) => {
         reject(error);
       });
