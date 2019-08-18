@@ -26,7 +26,7 @@ app.use(clientStartRouter);
 
 // If theres a static folder, express.static() it
 const staticFolder = path.join(process.cwd(), 'src/static');
-if(fs.existsSync(staticFolder)) {
+if (fs.existsSync(staticFolder)) {
   app.use(
     express.static(staticFolder)
   );
@@ -94,7 +94,7 @@ let ioEventHandlers = {};
 update('io', {
   ...io,
   on: (ev, handler) => {
-    if(!ioEventHandlers[ev]) {
+    if (!ioEventHandlers[ev]) {
       ioEventHandlers[ev] = new Set();
     }
     ioEventHandlers[ev].add(handler);
@@ -110,7 +110,7 @@ update('io', {
 
 require('{SERVER_ENTRY}');
 
-if(module.hot) {
+if (module.hot) {
   module.hot.accept('{SERVER_ENTRY}', () => {
     Object.keys(ioEventHandlers).forEach((ev) => {
       ioEventHandlers[ev].forEach((x) => io.removeListener(ev, x));

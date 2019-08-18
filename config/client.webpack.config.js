@@ -89,15 +89,20 @@ config = deepmerge({
       {
         test: /\.(j|t)sx?$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            extends: path.join(SYSTEM_DIR, 'config/babel.config.js'),
-            cacheDirectory: true,
-            cacheCompression: !development,
-            compact: !development,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              extends: path.join(SYSTEM_DIR, 'config/babel.config.js'),
+              cacheDirectory: true,
+              cacheCompression: !development,
+              compact: !development,
+            },
           },
-        },
+          {
+            loader: path.join(SYSTEM_DIR, 'plugins/auto-react-hot-loader.js'),
+          },
+        ],
       },
     ],
   },

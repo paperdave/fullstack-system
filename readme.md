@@ -3,7 +3,7 @@
 > Express.
 
 This module provides a setup for creating web applications with a backend server and front end client. Out of the box, you
-can use Socket.IO, React, and Express, all with hot reloading, but you can use other libraries like Vue or Angular.
+can use Socket.IO, React, and Express, all with hot reloading.
 
 This framework might not be the best thing to use since the Api is not documented much, and I change the default settings
 (to improve them) a lot, and I usually add features only when I need them for my own projects.
@@ -18,6 +18,14 @@ npx fullstack-system new my-app
 cd my-app
 npm start
 ```
+
+## Features
+Out of the box, you get:
+
+- React Automatic Hot-Reload. You just write React and the behind the scenes will automatically add in `react-hot-loader` to update changes without refreshing.
+- TypeScript Support, just install `typescript` and add a `tsconfig.json`
+- TODO: SCSS Support
+- TODO: CSS Modules Support
 
 ## Documentation
 You need two entry files in your project, one at `./src/server/index.js` and one at `./src/client/index.js`. Right now you cannot have these in other places.
