@@ -58,10 +58,8 @@ config = deepmerge({
     }],
   },
   plugins: [
-    ...development ? [
-      new StartServerPlugin('server.js'),
-      new webpack.HotModuleReplacementPlugin(),
-    ] : [],
+    development && new StartServerPlugin('server.js'),
+    development && new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env.__SYSTEM_DIR': JSON.stringify(SYSTEM_DIR),
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
@@ -84,7 +82,7 @@ config = deepmerge({
       // The formatter is invoked directly in WebpackDevServerUtils during development
       formatter: typescriptFormatter,
     }),
-  ],
+  ].filter(Boolean),
   resolve: {
     alias: {
       'fullstack-system': path.join(SYSTEM_DIR, 'server/index.js'),
