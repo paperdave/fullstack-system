@@ -1,7 +1,7 @@
 {
   "name": "fullstack-system",
   "description": "A build and development system for creating Client+Server applications with Socket.IO, React, and Express.",
-  "version": "2.5.4",
+  "version": "2.5.6",
   "author": "Dave Caruso",
   "license": "MIT",
   "fullstack-system-server": "server/index.js",

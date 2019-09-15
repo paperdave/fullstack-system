@@ -48,7 +48,7 @@ function getShouldTransformDefault(source) {
 
 function AddReactHotLoader(source) {
   // if production, or cannot find a default export, do nothing
-  if (process.env.NODE_ENV === 'production' || !source || !(/^\s*export\s+default/m).exec(source)) {
+  if (true || process.env.NODE_ENV === 'production' || !source || !(/^\s*export\s+default/m).exec(source) || (/$ *\/\/ *AUTO-RHL *OFF/).exec(source)) {
     return source;
   }
 

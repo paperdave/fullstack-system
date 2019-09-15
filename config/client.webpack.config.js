@@ -257,7 +257,7 @@ config = deepmerge({
       // The formatter is invoked directly in WebpackDevServerUtils during development
       formatter: typescriptFormatter,
     }),
-    development && new MiniCssExtractPlugin({
+    !development && new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: 'static/[contenthash:8].css',
