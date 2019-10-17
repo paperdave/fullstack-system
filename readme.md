@@ -39,3 +39,5 @@ You need two entry files in your project, one at `./src/server/index.js` and one
 - `webpack.client.config.js` Webpack extension configuration (only on client).
 - `webpack.server.config.js` Webpack extension configuration (only on server).
 - `babel.config.js` Babel config extension.
+
+Read the full documentation in the [documentation folder](docs/README.md);
