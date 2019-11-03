@@ -3,7 +3,7 @@ const cli = require('cli');
 const log = require('../log');
 const fs = require('fs-extra');
 const path = require('path');
-const unzip = require('unzip');
+const unzip = require('unzipper');
 const npmValid = require('validate-npm-package-name');
 const npmRunScript = require('npm-run-script');
 
