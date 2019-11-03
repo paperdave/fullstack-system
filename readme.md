@@ -22,12 +22,14 @@ npm start
 ## Features
 Out of the box, you get:
 
-- React Automatic Hot-Reload. You just write React and the behind the scenes will automatically add in `react-hot-loader` to update changes without refreshing.
-- CSS Modules
-- TypeScript Support \[\[unstable!!\]\], just install `typescript` and add a `tsconfig.json`
-- Sass/SCSS Support, just install `node-sass`
+- **React Automatic Hot-Reload**. You just write React and the behind the scenes will automatically add in `react-hot-loader` to update changes without refreshing.
+- **CSS Modules**, import any `.module.css`
+- **TypeScript Support**, just install `typescript` and add a `tsconfig.json`
+- **Sass/SCSS Support**, just install `node-sass`
 
 ## Documentation
+***TODO: Fully document everything in the project.***
+
 You need two entry files in your project, one at `./src/server/index.js` and one at `./src/client/index.js`. Right now you cannot have these in other places.
 
 ### Files
