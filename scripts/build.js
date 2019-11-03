@@ -26,7 +26,7 @@ const root = pkg['fullstack-system'] && pkg['fullstack-system'].root || 'src';
 const server = pkg['fullstack-system'] && pkg['fullstack-system'].server || 'server';
 const staticFolder = pkg['fullstack-system'] && pkg['fullstack-system'].static || 'static';
 const dist = pkg['fullstack-system'] && pkg['fullstack-system'].dist || 'dist';
-const port = pkg['fullstack-system'] && pkg['fullstack-system'].dist || 'port';
+const port = pkg['fullstack-system'] && (pkg['fullstack-system'].productionPort || pkg['fullstack-system'].port) || 8000;
 
 fs.removeSync(path.join(process.cwd(), dist));
 fs.mkdirsSync(path.join(process.cwd(), dist));
@@ -34,7 +34,7 @@ fs.mkdirsSync(path.join(process.cwd(), dist));
 // Generate Entry File
 const SERVER_ENTRY = path.join(process.cwd(), root, server).replace(/\\/g, '\\\\');
 const SERVER_NAME = pkg.name;
-const SERVER_PORT = port || 8000;
+const SERVER_PORT = port;
 
 log.name('Building ' + SERVER_NAME + '.');
 

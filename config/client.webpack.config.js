@@ -27,9 +27,13 @@ const tsEnabled = fs.existsSync(path.join(SOURCE_DIR, 'tsconfig.json'));
 const pkg = JSON.parse(fs.readFileSync(path.join(SOURCE_DIR, 'package.json')));
 const root = pkg['fullstack-system'] && pkg['fullstack-system'].root || 'src';
 const client = pkg['fullstack-system'] && pkg['fullstack-system'].client || 'client';
+const staticFolder = pkg['fullstack-system'] && pkg['fullstack-system'].static || 'static';
 const dist = pkg['fullstack-system'] && pkg['fullstack-system'].dist || 'dist';
 
 let indexHTMLPath = path.join(SYSTEM_DIR, 'index.html');
+if (fs.existsSync(path.join(SOURCE_DIR, root, staticFolder, 'index.html'))) {
+  indexHTMLPath = path.join(SOURCE_DIR, 'index.html');
+}
 if (fs.existsSync(path.join(SOURCE_DIR, 'index.html'))) {
   indexHTMLPath = path.join(SOURCE_DIR, 'index.html');
 }

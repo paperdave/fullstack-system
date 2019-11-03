@@ -30,10 +30,10 @@ Out of the box, you get:
 ## Documentation
 ***TODO: Fully document everything in the project.***
 
-You need two entry files in your project, one at `./src/server/index.js` and one at `./src/client/index.js`. Right now you cannot have these in other places.
+You need two entry files in your project, one at `./src/server/index.js` and one at `./src/client/index.js`.
 
 ### Files
-- `index.html` index.html template
+- `src/static/index.html` index.html template
 - `src/client/index.js` Client Entry File
 - `src/server/index.js` Server Entry File
 - `src/static` Extra static resources mounted at root of website.

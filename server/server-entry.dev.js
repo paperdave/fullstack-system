@@ -20,6 +20,7 @@ const log = require('../log');
 const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json')));
 const root = pkg['fullstack-system'] && pkg['fullstack-system'].root || 'src';
 const staticFolderName = pkg['fullstack-system'] && pkg['fullstack-system'].static || 'static';
+const port = process.env.PORT || parseInt(process.env.NODE_GLOBAL_PORT) || pkg['fullstack-system'] && pkg['fullstack-system'].port || 8000;
 
 let clientRouter = express.Router();
 let clientStartRouter = express.Router();
@@ -138,8 +139,6 @@ if (module.hot) {
 app.use((...args) => {
   return clientRouter(...args);
 });
-
-const port = process.env.PORT || parseInt(process.env.NODE_GLOBAL_PORT) || 8000;
 
 http.listen(
   port,

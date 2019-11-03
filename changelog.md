@@ -1,5 +1,9 @@
 # Changelog
 
+# 2.6.2 [2019-10-03]
+- index.html in static folder
+- fix port config
+
 # 2.6.0 [2019-10-02]
 - Added source location customization.
 
