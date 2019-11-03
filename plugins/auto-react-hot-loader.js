@@ -3,6 +3,10 @@
 // I changed it so I could be lazier and now it only runs on anything that returns a react element
 //
 
+const fs = require('fs');
+const path = require('path');
+const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json')));
+
 function transformSourceForClass(source, className) {
   source = source.replace(/^\s*export\s+default\s+/m, '');
   source += `\nexport default hot(${className});`;
@@ -48,7 +52,8 @@ function getShouldTransformDefault(source) {
 
 function AddReactHotLoader(source) {
   // if production, or cannot find a default export, do nothing
-  if (true || process.env.NODE_ENV === 'production' || !source || !(/^\s*export\s+default/m).exec(source) || (/$ *\/\/ *AUTO-RHL *OFF/).exec(source)) {
+  const optIn = pkg['fullstack-system'] && pkg['fullstack-system'].autoHotLoader;
+  if (!optIn && process.env.NODE_ENV === 'production' || !source || !(/^\s*export\s+default/m).exec(source) || (/$ *\/\/ *AUTO-RHL *OFF/).exec(source)) {
     return source;
   }
 

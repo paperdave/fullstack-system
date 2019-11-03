@@ -14,6 +14,11 @@ const fs = require('fs');
 
 const tsEnabled = fs.existsSync(path.join(SOURCE_DIR, 'tsconfig.json'));
 
+const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json')));
+const root = pkg['fullstack-system'] && pkg['fullstack-system'].root || 'src';
+const server = pkg['fullstack-system'] && pkg['fullstack-system'].server || 'server';
+const dist = pkg['fullstack-system'] && pkg['fullstack-system'].dist || 'dist';
+
 let config = {};
 if (fs.existsSync(path.join(SOURCE_DIR, 'server.webpack.config.js'))) {
   config = deepmerge(config, require(path.join(SOURCE_DIR, 'server.webpack.config.js')), { clone: false });
@@ -73,12 +78,8 @@ config = deepmerge({
       tsconfig: path.join(SOURCE_DIR, 'tsconfig.json'),
       reportFiles: [
         '**',
-        '!**/__tests__/**',
-        '!**/?(*.)(spec|test).*',
-        '!**/src/setupProxy.*',
-        '!**/src/setupTests.*',
       ],
-      watch: path.join(SOURCE_DIR, 'src'),
+      watch: path.join(SOURCE_DIR, root, server),
       // The formatter is invoked directly in WebpackDevServerUtils during development
       formatter: typescriptFormatter,
     }),
@@ -90,14 +91,14 @@ config = deepmerge({
     extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
     mainFields: ['fullstack-system-server', 'browser', 'module', 'main'],
     modules: [
-      path.join(SOURCE_DIR, 'src'),
+      path.join(SOURCE_DIR, root),
       path.join(SYSTEM_DIR, 'node_modules'),
       path.join(SOURCE_DIR, 'node_modules'),
       path.join(SOURCE_DIR, 'node_modules/@babel/runtime-corejs2/node_modules'),
     ],
   },
   output: {
-    path: development ? path.join(SYSTEM_DIR, '.temp') : path.join(SOURCE_DIR, 'dist'),
+    path: development ? path.join(SYSTEM_DIR, '.temp') : path.join(SOURCE_DIR, dist),
     filename: 'server.js',
   },
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',

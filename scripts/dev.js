@@ -14,12 +14,24 @@ const log = require('../log');
 
 process.env.NODE_GLOBAL_PORT = global.port;
 
+let pkg;
+try {
+  pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json')));
+} catch (error) {
+  log.error('Cannot read project\'s package.json file. Does it exist?');
+  return;
+}
+
+const root = pkg['fullstack-system'] && pkg['fullstack-system'].root || 'src';
+const server = pkg['fullstack-system'] && pkg['fullstack-system'].server || 'server';
+
 // Clear Temp
 fs.removeSync(path.join(__dirname, '../.temp'));
 fs.mkdirsSync(path.join(__dirname, '../.temp'));
 
 // Generate Entry File
-const SERVER_ENTRY = path.join(process.cwd(), './src/server').replace(/\\/g, '\\\\');
+const SERVER_ENTRY = path.join(process.cwd(), root, server).replace(/\\/g, '\\\\');
+const SERVER_NAME = pkg.name;
 
 fs.writeFileSync(
   path.join(__dirname, '../.temp/webpack-server-entry.js'),
@@ -27,6 +39,7 @@ fs.writeFileSync(
     .toString()
     // Replace to make webpack happy!
     .replace(/'\{SERVER_ENTRY\}'/g, `'${SERVER_ENTRY}'`)
+    .replace(/'\{SERVER_NAME\}'/g, `'${SERVER_NAME}'`)
 );
 
 // Webpack Watch It
@@ -40,7 +53,7 @@ compiler.watch(
     aggregateTimeout: 200,
   },
   (err, stats) => {
-    if(first) {
+    if (first) {
       first = false;
       return;
     }

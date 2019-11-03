@@ -24,6 +24,11 @@ const development = process.env.NODE_ENV !== 'production';
 
 const tsEnabled = fs.existsSync(path.join(SOURCE_DIR, 'tsconfig.json'));
 
+const pkg = JSON.parse(fs.readFileSync(path.join(SOURCE_DIR, 'package.json')));
+const root = pkg['fullstack-system'] && pkg['fullstack-system'].root || 'src';
+const client = pkg['fullstack-system'] && pkg['fullstack-system'].client || 'client';
+const dist = pkg['fullstack-system'] && pkg['fullstack-system'].dist || 'dist';
+
 let indexHTMLPath = path.join(SYSTEM_DIR, 'index.html');
 if (fs.existsSync(path.join(SOURCE_DIR, 'index.html'))) {
   indexHTMLPath = path.join(SOURCE_DIR, 'index.html');
@@ -48,7 +53,7 @@ if (config.html) {
 
 let enableReactDom = true;
 try {
-  eval('require.resolve ("react-dom")');
+  eval('require.resolve("react-dom")');
 } catch (error) {
   enableReactDom = false;
 }
@@ -114,18 +119,18 @@ const getStyleLoaders = (cssOptions, scss) => {
 config = deepmerge({
   entry: [
     ...development ? ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000'] : [],
-    path.join(SOURCE_DIR, 'src/client/'),
+    path.join(SOURCE_DIR, root, client),
   ],
   devtool: development
     ? 'cheap-module-source-map'
     : shouldUseSourceMap && 'source-map',
   output: {
-    path: development ? path.join(SYSTEM_DIR, '.temp') : path.join(SOURCE_DIR, 'dist'),
+    path: development ? path.join(SYSTEM_DIR, '.temp') : path.join(SOURCE_DIR, dist),
     publicPath: '/',
-    filename: 'static/client.js',
+    filename: pkg.name + '.js',
     devtoolModuleFilenameTemplate: development
       ? (info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
-      : (info) => path.relative(SOURCE_DIR, 'src', info.absoluteResourcePath).replace(/\\/g, '/'),
+      : (info) => path.relative(SOURCE_DIR, root, info.absoluteResourcePath).replace(/\\/g, '/'),
   },
   devServer: {
     hot: true,
@@ -139,7 +144,7 @@ config = deepmerge({
             loader: requireResolve('url-loader'),
             options: {
               limit: 10000,
-              name: 'static/[hash:8].[ext]',
+              name: '[hash:8].[ext]',
             },
           },
           {
@@ -207,7 +212,7 @@ config = deepmerge({
             use: {
               loader: requireResolve('file-loader'),
               options: {
-                name: 'static/[hash:8].[ext]',
+                name: '[hash:8].[ext]',
               },
             },
           },
@@ -248,20 +253,16 @@ config = deepmerge({
       tsconfig: path.join(SOURCE_DIR, 'tsconfig.json'),
       reportFiles: [
         '**',
-        '!**/__tests__/**',
-        '!**/?(*.)(spec|test).*',
-        '!**/src/setupProxy.*',
-        '!**/src/setupTests.*',
       ],
-      watch: path.join(SOURCE_DIR, 'src'),
+      watch: path.join(SOURCE_DIR, root, client),
       // The formatter is invoked directly in WebpackDevServerUtils during development
       formatter: typescriptFormatter,
     }),
     !development && new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: 'static/[contenthash:8].css',
-      chunkFilename: 'static/[contenthash:8].chunk.css',
+      filename: '[contenthash:8].css',
+      chunkFilename: '[contenthash:8].chunk.css',
     }),
   ].filter(Boolean),
   resolve: {
@@ -273,7 +274,7 @@ config = deepmerge({
     extensions: ['.jsx', '.js', '.json', '.tsx', '.ts'],
     mainFields: ['fullstack-system-client', 'browser', 'module', 'main'],
     modules: [
-      path.join(SOURCE_DIR, 'src'),
+      path.join(SOURCE_DIR, root),
       path.join(SYSTEM_DIR, 'node_modules'),
       path.join(SOURCE_DIR, 'node_modules'),
       path.join(SOURCE_DIR, 'node_modules/@babel/runtime-corejs2/node_modules'),

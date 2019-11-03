@@ -17,7 +17,6 @@ try {
   enableReactDom = false;
 }
 
-
 module.exports = deepmerge({
   presets: [
     [

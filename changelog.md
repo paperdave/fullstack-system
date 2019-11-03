@@ -1,5 +1,8 @@
 # Changelog
 
+# 2.6.0 [2019-10-02]
+- Added source location customization.
+
 # 2.5.0 [2019-08-16]
 - TypeScript Support
 

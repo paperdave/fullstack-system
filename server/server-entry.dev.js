@@ -1,4 +1,4 @@
-import { __update as update } from 'fullstack-system';
+const { __update: update } = require('fullstack-system');
 
 // eslint-disable-next-line no-underscore-dangle
 const SYSTEM_DIR = process.env.__SYSTEM_DIR;
@@ -17,6 +17,10 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const log = require('../log');
 
+const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json')));
+const root = pkg['fullstack-system'] && pkg['fullstack-system'].root || 'src';
+const staticFolderName = pkg['fullstack-system'] && pkg['fullstack-system'].static || 'static';
+
 let clientRouter = express.Router();
 let clientStartRouter = express.Router();
 update('app', clientRouter);
@@ -25,7 +29,7 @@ update('appStart', clientStartRouter);
 app.use(clientStartRouter);
 
 // If theres a static folder, express.static() it
-const staticFolder = path.join(process.cwd(), 'src/static');
+const staticFolder = path.join(process.cwd(), root, staticFolderName);
 if (fs.existsSync(staticFolder)) {
   app.use(
     express.static(staticFolder)
