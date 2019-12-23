@@ -5,6 +5,16 @@
 declare namespace NodeJS {
   interface ProcessEnv {
     readonly NODE_ENV: 'development' | 'production' | 'test';
+    readonly PRODUCTION: boolean;
+    readonly IS_CLIENT: boolean;
+    readonly IS_SERVER: boolean;
+  }
+  interface ProcessVersions {
+    readonly fullstack_system: string;
+    readonly express: string;
+    readonly webpack: string;
+    readonly socketio: string;
+    readonly react: string;
   }
 }
 

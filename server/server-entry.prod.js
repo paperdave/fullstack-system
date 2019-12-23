@@ -21,7 +21,7 @@ app.use(clientStartRouter);
 const s = express.static(eval('__dirname'));
 app.use(
   (req, res, next) => {
-    if (req.url !== '/server.js' || req.url !== '/server.js.map') {
+    if (req.url.toLowerCase() !== '/server.js' && req.url.toLowerCase() !== '/server.js.map') {
       s(req, res, next);
     } else {
       next();

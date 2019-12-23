@@ -32,7 +32,7 @@ const dist = pkg['fullstack-system'] && pkg['fullstack-system'].dist || 'dist';
 
 let indexHTMLPath = path.join(SYSTEM_DIR, 'index.html');
 if (fs.existsSync(path.join(SOURCE_DIR, root, staticFolder, 'index.html'))) {
-  indexHTMLPath = path.join(SOURCE_DIR, 'index.html');
+  indexHTMLPath = path.join(SOURCE_DIR, root, staticFolder, 'index.html');
 }
 if (fs.existsSync(path.join(SOURCE_DIR, 'index.html'))) {
   indexHTMLPath = path.join(SOURCE_DIR, 'index.html');
@@ -267,6 +267,13 @@ config = deepmerge({
       // both options are optional
       filename: '[contenthash:8].css',
       chunkFilename: '[contenthash:8].chunk.css',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.PRODUCTION': JSON.stringify(process.env.NODE_ENV === 'production'),
+      'process.env.IS_CLIENT': JSON.stringify(true),
+      'process.env.IS_SERVER': JSON.stringify(false),
+      'process.versions': JSON.stringify(process.versions),
     }),
   ].filter(Boolean),
   resolve: {

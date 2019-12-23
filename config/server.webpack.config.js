@@ -69,6 +69,8 @@ config = deepmerge({
       'process.env.__SYSTEM_DIR': JSON.stringify(SYSTEM_DIR),
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.PRODUCTION': JSON.stringify(process.env.NODE_ENV === 'production'),
+      'process.env.IS_CLIENT': JSON.stringify(false),
+      'process.env.IS_SERVER': JSON.stringify(true),
     }),
     tsEnabled && new ForkTsCheckerWebpackPlugin({
       typescript: eval('require.resolve')('typescript'),

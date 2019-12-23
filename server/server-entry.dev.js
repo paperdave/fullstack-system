@@ -32,8 +32,15 @@ app.use(clientStartRouter);
 // If theres a static folder, express.static() it
 const staticFolder = path.join(process.cwd(), root, staticFolderName);
 if (fs.existsSync(staticFolder)) {
+  const s = express.static(staticFolder);
   app.use(
-    express.static(staticFolder)
+    (req, res, next) => {
+      if (req.url.toLowerCase() !== '/index.html' && req.url !== '/') {
+        s(req, res, next);
+      } else {
+        next();
+      }
+    }
   );
 }
 
