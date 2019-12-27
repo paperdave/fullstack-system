@@ -1,5 +1,15 @@
 const { __update: update } = require('fullstack-system');
 
+process.versions.fullstack_system = require('../package.json').version;
+process.versions.webpack = require('webpack/package.json').version;
+process.versions.express = require('express/package.json').version;
+process.versions.socketio = require('socket.io/package.json').version;
+try {
+  process.versions.react = require('react/package.json').version;
+} catch (error) {
+  process.versions.react = 'N/A';
+}
+
 // eslint-disable-next-line no-underscore-dangle
 const SYSTEM_DIR = process.env.__SYSTEM_DIR;
 const SOURCE_DIR = process.cwd();

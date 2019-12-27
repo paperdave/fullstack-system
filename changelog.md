@@ -1,5 +1,8 @@
 # Changelog
 
+# 2.7.0 [2019-12-23]
+- added process.env and process.versions stuff.
+
 # 2.6.2 [2019-10-03]
 - index.html in static folder
 - fix port config

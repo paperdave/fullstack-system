@@ -273,6 +273,7 @@ config = deepmerge({
       'process.env.PRODUCTION': JSON.stringify(process.env.NODE_ENV === 'production'),
       'process.env.IS_CLIENT': JSON.stringify(true),
       'process.env.IS_SERVER': JSON.stringify(false),
+      'process.env.VERSION': JSON.stringify(pkg.version),
       'process.versions': JSON.stringify(process.versions),
     }),
   ].filter(Boolean),

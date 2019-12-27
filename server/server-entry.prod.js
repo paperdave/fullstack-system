@@ -8,6 +8,16 @@ const cli = require('cli');
 
 const packageJSON = eval('require("../package.json")');
 
+process.versions.fullstack_system = require('../package.json').version;
+process.versions.webpack = require('webpack/package.json').version;
+process.versions.express = require('express/package.json').version;
+process.versions.socketio = require('socket.io/package.json').version;
+try {
+  process.versions.react = require('react/package.json').version;
+} catch (error) {
+  process.versions.react = 'N/A';
+}
+
 cli.setApp(packageJSON.name, packageJSON.version);
 cli.enable('version');
 

@@ -8,6 +8,7 @@ declare namespace NodeJS {
     readonly PRODUCTION: boolean;
     readonly IS_CLIENT: boolean;
     readonly IS_SERVER: boolean;
+    readonly VERSION: string;
   }
   interface ProcessVersions {
     readonly fullstack_system: string;
