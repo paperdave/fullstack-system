@@ -53,7 +53,7 @@ function getShouldTransformDefault(source) {
 function AddReactHotLoader(source) {
   // if production, or cannot find a default export, do nothing
   const optIn = pkg['fullstack-system'] && pkg['fullstack-system'].autoHotLoader;
-  if (!optIn && process.env.NODE_ENV === 'production' || !source || !(/^\s*export\s+default/m).exec(source) || (/$ *\/\/ *AUTO-RHL *OFF/).exec(source)) {
+  if (!optIn && process.env.NODE_ENV === 'production' || !source || !(/^\s*export\s+default/m).exec(source) || (/^ *\/\/ *AUTO-RHL *OFF/).exec(source)) {
     return source;
   }
 
