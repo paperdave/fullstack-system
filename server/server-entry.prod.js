@@ -6,9 +6,9 @@ const io = require('socket.io')(http);
 const log = require('../log');
 const cli = require('cli');
 
-const packageJSON = eval('require("../package.json")');
+const packageJSON = eval('require("./package.json")');
 
-process.versions.fullstack_system = require('../package.json').version;
+process.versions.fullstack_system = require('fullstack-system').version;
 process.versions.webpack = require('webpack/package.json').version;
 process.versions.express = require('express/package.json').version;
 process.versions.socketio = require('socket.io/package.json').version;
