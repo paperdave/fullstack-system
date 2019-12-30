@@ -14,9 +14,12 @@ try {
 cli.setApp('fullstack-system', process.versions.fullstack_system);
 cli.enable('version');
 
-const params = cli.parse({
-  port: ['p', 'The port to run the server on.', 'NUMBER'],
-}, ['dev', 'build', 'new', 'production', 'clean']);
+const params = cli.parse(
+  {
+    port: ['p', 'The port to run the server on.', 'NUMBER'],
+  },
+  ['dev', 'build', 'new', 'production', 'clean']
+);
 
 global.port = params.port;
 

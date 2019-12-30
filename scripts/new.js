@@ -20,7 +20,7 @@ async function runSequence(promises) {
 
 runSequence([
   // Validate Project Name
-  async() => {
+  async () => {
     if (!cli.args[0]) {
       log.error('Missing Project Name');
       throw 0;
@@ -39,12 +39,12 @@ runSequence([
     }
   },
   // Create Folder
-  async() => {
+  async () => {
     log.info(`Creating new project "${cli.args[0]}"`);
     await fs.mkdirs(cli.args[0]);
   },
   // Unzip Template
-  async() => {
+  async () => {
     console.log(
       'Copying the ' + (cli.args[1] === 'typescript' ? 'TypeScript' : 'Starter') + ' Template...'
     );
@@ -58,7 +58,7 @@ runSequence([
     });
   },
   // Set package name in package.json
-  async() => {
+  async () => {
     process.chdir('./' + cli.args[0]);
 
     const json = await fs.readJSON('./package.json');
@@ -80,7 +80,7 @@ runSequence([
     });
   },
   // Say final message
-  async() => {
+  async () => {
     console.log('');
     console.log('DONE!');
     console.log('');

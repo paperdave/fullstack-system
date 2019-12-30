@@ -1,6 +1,0 @@
-{
-  "extends": "dave",
-  "globals": {
-    "SERVER_PORT": true
-  }
-}

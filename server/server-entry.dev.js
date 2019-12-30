@@ -28,9 +28,13 @@ const io = require('socket.io')(http);
 const log = require('../log');
 
 const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json')));
-const root = pkg['fullstack-system'] && pkg['fullstack-system'].root || 'src';
-const staticFolderName = pkg['fullstack-system'] && pkg['fullstack-system'].static || 'static';
-const port = process.env.PORT || parseInt(process.env.NODE_GLOBAL_PORT) || pkg['fullstack-system'] && pkg['fullstack-system'].port || 8000;
+const root = (pkg['fullstack-system'] && pkg['fullstack-system'].root) || 'src';
+const staticFolderName = (pkg['fullstack-system'] && pkg['fullstack-system'].static) || 'static';
+const port =
+  process.env.PORT ||
+  parseInt(process.env.NODE_GLOBAL_PORT) ||
+  (pkg['fullstack-system'] && pkg['fullstack-system'].port) ||
+  8000;
 
 let clientRouter = express.Router();
 let clientStartRouter = express.Router();
@@ -43,15 +47,13 @@ app.use(clientStartRouter);
 const staticFolder = path.join(process.cwd(), root, staticFolderName);
 if (fs.existsSync(staticFolder)) {
   const s = express.static(staticFolder);
-  app.use(
-    (req, res, next) => {
-      if (req.url.toLowerCase() !== '/index.html' && req.url !== '/') {
-        s(req, res, next);
-      } else {
-        next();
-      }
+  app.use((req, res, next) => {
+    if (req.url.toLowerCase() !== '/index.html' && req.url !== '/') {
+      s(req, res, next);
+    } else {
+      next();
     }
-  );
+  });
 }
 
 // Create Client Compiler
@@ -62,26 +64,30 @@ const compiler = webpack(require('../config/client.webpack.config'));
 
 const watchCompiler = compiler.watch.bind(compiler);
 compiler.watch = (opt, callback, ...etc) => {
-  watchCompiler(opt, (err, stats, ...etc) => {
-    if (err) {
-      log.client('Compiled With Errors.');
-    } else {
-      log.client('Compiled Successfully.');
-    }
+  watchCompiler(
+    opt,
+    (err, stats, ...etc) => {
+      if (err) {
+        log.client('Compiled With Errors.');
+      } else {
+        log.client('Compiled Successfully.');
+      }
 
-    if (stats.compilation.warnings) {
-      stats.compilation.warnings.forEach((warn) => {
-        log.clientWarn(warn);
-      });
-    }
-    if (stats.compilation.errors) {
-      stats.compilation.errors.forEach((err) => {
-        log.clientError(err);
-      });
-    }
+      if (stats.compilation.warnings) {
+        stats.compilation.warnings.forEach((warn) => {
+          log.clientWarn(warn);
+        });
+      }
+      if (stats.compilation.errors) {
+        stats.compilation.errors.forEach((err) => {
+          log.clientError(err);
+        });
+      }
 
-    callback(err, stats, ...etc);
-  }, ...etc);
+      callback(err, stats, ...etc);
+    },
+    ...etc
+  );
 };
 
 app.use(
@@ -140,7 +146,7 @@ if (module.hot) {
     ioEventHandlers = {};
 
     io.emit('@fullstack-system::reconnect');
-    Object.values(io.of('/').connected).forEach(function (s) {
+    Object.values(io.of('/').connected).forEach(function(s) {
       s.disconnect(true);
     });
 
@@ -157,7 +163,4 @@ app.use((...args) => {
   return clientRouter(...args);
 });
 
-http.listen(
-  port,
-  () => log.name('Running on http://localhost:' + port + '/')
-);
+http.listen(port, () => log.name('Running on http://localhost:' + port + '/'));

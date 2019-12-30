@@ -26,12 +26,14 @@ function transformSourceDefault(source) {
 }
 
 function getImportLine() {
-  return 'import { hot } from \'react-hot-loader/root\';\n';
+  return "import { hot } from 'react-hot-loader/root';\n";
 }
 
 function getExportDefaultClassName(source) {
   let className = '';
-  const matches = source.match(/^\s*export\s+default\s+class\s+(.*?)\s+extends\s+(?:(?:React\.|react\.)?Component)\s/m);
+  const matches = source.match(
+    /^\s*export\s+default\s+class\s+(.*?)\s+extends\s+(?:(?:React\.|react\.)?Component)\s/m
+  );
   if (matches && matches[1]) {
     className = matches[1];
   }
@@ -53,7 +55,12 @@ function getShouldTransformDefault(source) {
 function AddReactHotLoader(source) {
   // if production, or cannot find a default export, do nothing
   const optIn = pkg['fullstack-system'] && pkg['fullstack-system'].autoHotLoader;
-  if (!optIn && process.env.NODE_ENV === 'production' || !source || !(/^\s*export\s+default/m).exec(source) || (/^ *\/\/ *AUTO-RHL *OFF/).exec(source)) {
+  if (
+    (!optIn && process.env.NODE_ENV === 'production') ||
+    !source ||
+    !/^\s*export\s+default/m.exec(source) ||
+    /^ *\/\/ *AUTO-RHL *OFF/.exec(source)
+  ) {
     return source;
   }
 

@@ -18,12 +18,12 @@ let pkg;
 try {
   pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json')));
 } catch (error) {
-  log.error('Cannot read project\'s package.json file. Does it exist?');
+  log.error("Cannot read project's package.json file. Does it exist?");
   return;
 }
 
-const root = pkg['fullstack-system'] && pkg['fullstack-system'].root || 'src';
-const server = pkg['fullstack-system'] && pkg['fullstack-system'].server || 'server';
+const root = (pkg['fullstack-system'] && pkg['fullstack-system'].root) || 'src';
+const server = (pkg['fullstack-system'] && pkg['fullstack-system'].server) || 'server';
 
 // Clear Temp
 fs.removeSync(path.join(__dirname, '../.temp'));
@@ -35,7 +35,8 @@ const SERVER_NAME = pkg.name;
 
 fs.writeFileSync(
   path.join(__dirname, '../.temp/webpack-server-entry.js'),
-  fs.readFileSync(path.join(__dirname, '../server/server-entry.dev.js'))
+  fs
+    .readFileSync(path.join(__dirname, '../server/server-entry.dev.js'))
     .toString()
     // Replace to make webpack happy!
     .replace(/'\{SERVER_ENTRY\}'/g, `'${SERVER_ENTRY}'`)

@@ -29,15 +29,13 @@ update('appStart', clientStartRouter);
 app.use(clientStartRouter);
 
 const s = express.static(eval('__dirname'));
-app.use(
-  (req, res, next) => {
-    if (req.url.toLowerCase() !== '/server.js' && req.url.toLowerCase() !== '/server.js.map') {
-      s(req, res, next);
-    } else {
-      next();
-    }
+app.use((req, res, next) => {
+  if (req.url.toLowerCase() !== '/server.js' && req.url.toLowerCase() !== '/server.js.map') {
+    s(req, res, next);
+  } else {
+    next();
   }
-);
+});
 
 update('io', io);
 

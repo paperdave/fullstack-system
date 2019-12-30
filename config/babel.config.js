@@ -17,28 +17,27 @@ try {
   enableReactDom = false;
 }
 
-module.exports = deepmerge({
-  presets: [
-    [
-      '@babel/env',
-      {
-        modules: false,
-        targets: {
-          node: 8,
+module.exports = deepmerge(
+  {
+    presets: [
+      [
+        '@babel/env',
+        {
+          modules: false,
+          targets: {
+            node: 8,
+          },
+          useBuiltIns: 'usage',
+          corejs: 3,
         },
-        useBuiltIns: 'usage',
-        corejs: 3,
-      },
+      ],
+      '@babel/react',
     ],
-    '@babel/react',
-  ],
-  plugins: [
-    '@babel/plugin-syntax-dynamic-import',
-    ...enableReactDom ? [
-      'react-hot-loader/babel',
-    ] : [],
-    ...tsEnabled ? [
-      ['@babel/plugin-transform-typescript', { isTSX: true }],
-    ] : [],
-  ],
-}, custom);
+    plugins: [
+      '@babel/plugin-syntax-dynamic-import',
+      ...(enableReactDom ? ['react-hot-loader/babel'] : []),
+      ...(tsEnabled ? [['@babel/plugin-transform-typescript', { isTSX: true }]] : []),
+    ],
+  },
+  custom
+);
