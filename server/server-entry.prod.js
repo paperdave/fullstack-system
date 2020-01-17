@@ -2,7 +2,6 @@ const { __update: update } = require('fullstack-system');
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
 const log = require('../log');
 const cli = require('cli');
 
@@ -37,7 +36,14 @@ app.use((req, res, next) => {
   }
 });
 
-update('io', io);
+let io;
+function getIo() {
+  if(!io) {
+    io = require('socket.io')(http);
+  }
+  return io;
+}
+update('io', getIo);
 
 const clientRouter = express.Router();
 update('app', clientRouter);

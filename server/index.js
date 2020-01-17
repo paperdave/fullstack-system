@@ -1,19 +1,22 @@
-export let io;
-export let app;
-export let appStart;
+module.exports = {};
 
-// eslint-disable-next-line no-underscore-dangle
-export function __update(name, value) {
+function update(name, value) {
   if (name === 'io') {
-    io = value;
+    Object.defineProperty(module.exports, 'io', { get: value });
     return;
   }
   if (name === 'app') {
-    app = value;
+    module.exports.app = value;
     return;
   }
   if (name === 'appStart') {
-    appStart = value;
+    module.exports.appStart = value;
+    return;
+  }
+  if (name === 'rootRouter') {
+    module.exports.rootRouter = value;
     return;
   }
 }
+
+module.exports.__update = update;

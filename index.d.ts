@@ -80,5 +80,8 @@ declare module 'fullstack-system' {
   export const io: SocketServer;
   export const app: Router;
   export const appStart: Router;
+  export const rootRouter: Router;
   export const connect: SocketIOClientStatic;
+
+  export function disableSocketServer(): void;
 }

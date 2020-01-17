@@ -40,6 +40,7 @@ let clientRouter = express.Router();
 let clientStartRouter = express.Router();
 update('app', clientRouter);
 update('appStart', clientStartRouter);
+update('rootRouter', app);
 
 app.use(clientStartRouter);
 
@@ -119,7 +120,7 @@ app.use(
 );
 
 let ioEventHandlers = {};
-update('io', {
+const ioProxy = {
   ...io,
   on: (ev, handler) => {
     if (!ioEventHandlers[ev]) {
@@ -134,7 +135,8 @@ update('io', {
     }
     io[ev].removeListener(ev, handler);
   },
-});
+}
+update('io', () => ioProxy);
 
 require('{SERVER_ENTRY}');
 
