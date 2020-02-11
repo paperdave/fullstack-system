@@ -125,6 +125,9 @@ const getStyleLoaders = (cssOptions, scss) => {
   return loaders;
 };
 
+const optInAHMR = pkg['fullstack-system'] ? ('autoHotLoader' in pkg['fullstack-system'] ? pkg['fullstack-system'].autoHotLoader : true) : true;
+const useAHMR = optInAHMR && development;
+
 config = deepmerge(
   {
     entry: [
@@ -168,10 +171,10 @@ config = deepmerge(
                     compact: !development,
                   },
                 },
-                {
+                useAHMR && {
                   loader: path.join(SYSTEM_DIR, 'plugins/auto-react-hot-loader.js'),
                 },
-              ],
+              ].filter(Boolean),
             },
             {
               test: cssRegex,

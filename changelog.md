@@ -1,5 +1,8 @@
 # Changelog
 
+# 2.8.1 [2020-02-11]
+- Bug Fix: Auto HMR Disabling should work now
+
 # 2.7.0 [2019-12-23]
 - added process.env and process.versions stuff.
 
